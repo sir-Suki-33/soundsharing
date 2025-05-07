@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iniciar Sesión - SoundSharing</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+  <style>
+    :root {
+      --primary-color: #4CAF50;
+      --primary-dark: #2E7D32;
+      --background-color: #0d0d0d;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --text-color: rgba(255, 255, 255, 0.9);
+      --text-muted: rgba(255, 255, 255, 0.6);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+    
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+    
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+      z-index: 1;
+      width: 100%;
+    }
+    
+    .logo-link {
+      text-decoration: none;
+      margin-bottom: 2rem;
+    }
+    
+    .logo {
+      font-size: 2.5rem;
+      font-weight: bold;
+      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 10px rgba(76, 175, 80, 0.3);
+    }
+    
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 500px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 0.6s ease;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .card-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .card-title {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .card-subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 0.6rem;
+      font-weight: 500;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-color);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+    }
+    
+    .input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 2.7rem;
+      color: var(--text-muted);
+    }
+    
+    .password-toggle {
+      position: absolute;
+      right: 1rem;
+      top: 2.7rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-size: 1rem;
+    }
+    
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .custom-checkbox {
+      position: relative;
+      padding-left: 30px;
+      cursor: pointer;
+      user-select: none;
+      color: var(--text-muted);
+    }
+    
+    .custom-checkbox input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+    
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 20px;
+      width: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+    }
+    
+    .custom-checkbox:hover input ~ .checkmark {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .custom-checkbox input:checked ~ .checkmark {
+      background-color: var(--primary-color);
+    }
+    
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+    
+    .custom-checkbox input:checked ~ .checkmark:after {
+      display: block;
+    }
+    
+    .custom-checkbox .checkmark:after {
+      left: 7px;
+      top: 3px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+    
+    .forgot-password {
+      text-align: right;
+      margin-top: -1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .forgot-password a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+    }
+    
+    .forgot-password a:hover {
+      color: var(--primary-color);
+    }
+    
+    .btn {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      color: white;
+      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(76, 175, 80, 0.6);
+    }
+    
+    .form-footer {
+      text-align: center;
+      margin-top: 2rem;
+      color: var(--text-muted);
+    }
+    
+    .form-footer a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    
+    .form-footer a:hover {
+      text-decoration: underline;
+    }
+    
+    .error-message {
+      color: #ff6b6b;
+      background: rgba(255, 107, 107, 0.1);
+      border: 1px solid rgba(255, 107, 107, 0.2);
+      border-radius: 8px;
+      padding: 0.75rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      display: none;
+    }
+    
+    .success-message {
+      color: #4CAF50;
+      background: rgba(76, 175, 80, 0.1);
+      border: 1px solid rgba(76, 175, 80, 0.2);
+      border-radius: 8px;
+      padding: 0.75rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      display: none;
+    }
+    
+    /* Separador O */
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 2rem 0;
+      color: var(--text-muted);
+    }
+    
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .divider span {
+      padding: 0 1rem;
+      font-size: 0.9rem;
+    }
+    
+    /* Botones de redes sociales */
+    .social-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .social-btn {
+      flex: 1;
+      padding: 0.8rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    
+    .social-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .social-btn i {
+      margin-right: 0.5rem;
+    }
+    
+    /* Loading spinner */
+    .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #ffffff;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .card {
+        padding: 2rem 1.5rem;
+      }
+      
+      .card-title {
+        font-size: 1.8rem;
+      }
+      
+      .social-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Fondo de partículas -->
+  <div id="particles-js"></div>
+  
+  <div class="container">
+    <a href="index.html" class="logo-link">
+      <h1 class="logo">SoundSharing</h1>
+    </a>
+    
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">Iniciar Sesión</h2>
+        <p class="card-subtitle">Ingresa a tu cuenta para compartir audio</p>
+      </div>
+      
+      <div class="error-message" id="error-message">
+        Credenciales inválidas. Por favor, intenta de nuevo.
+      </div>
+      
+      <div class="success-message" id="success-message">
+        Inicio de sesión exitoso. Redirigiendo...
+      </div>
+      
+      <form id="login-form">
+        <div class="form-group">
+          <label for="email" class="form-label">Correo Electrónico</label>
+          <i class="fas fa-envelope input-icon"></i>
+          <input type="email" id="email" name="email" class="form-input" placeholder="tucorreo@ejemplo.com" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="password" class="form-label">Contraseña</label>
+          <i class="fas fa-lock input-icon"></i>
+          <input type="password" id="password" name="password" class="form-input" placeholder="Tu contraseña" required>
+          <button type="button" class="password-toggle" id="password-toggle">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+        
+        <div class="checkbox-container">
+          <label class="custom-checkbox">
+            Recordarme
+            <input type="checkbox" id="remember-me" name="remember-me">
+            <span class="checkmark"></span>
+          </label>
+        </div>
+        
+        <div class="forgot-password">
+          <a href="forgot-password.html">¿Olvidaste tu contraseña?</a>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">
+          <span>Iniciar Sesión</span>
+          <div class="spinner" id="spinner"></div>
+        </button>
+      </form>
+      
+      <div class="divider">
+        <span>O</span>
+      </div>
+      
+      <div class="social-buttons">
+        <a href="#" class="social-btn">
+          <i class="fab fa-google"></i> Google
+        </a>
+        <a href="#" class="social-btn">
+          <i class="fab fa-facebook-f"></i> Facebook
+        </a>
+      </div>
+      
+      <div class="form-footer">
+        ¿No tienes una cuenta? <a href="register.html">Regístrate</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Configuración de partículas
+      tsParticles.load("particles-js", {
+        "particles": {
+          "number": {
+            "value": 15,
+            "density": {
+              "enable": true,
+              "area": 800
+            }
+          },
+          "shape": {
+            "type": "circle",
+            "stroke": {
+              "width": 0,
+              "color": "#4CAF50"
+            }
+          },
+          "opacity": {
+            "value": 0.3,
+            "random": true
+          },
+          "size": {
+            "value": 5,
+            "random": true
+          },
+          "move": {
+            "enable": true,
+            "speed": 1,
+            "direction": "none",
+            "random": true,
+            "outModes": {
+              "default": "out"
+            }
+          },
+          "color": {
+            "value": "#4CAF50"
+          }
+        },
+        "interactivity": {
+          "events": {
+            "onHover": {
+              "enable": true,
+              "mode": "repulse"
+            }
+          }
+        },
+        "retina_detect": true
+      });
+      
+      // Toggle de la contraseña
+      document.getElementById('password-toggle').addEventListener('click', function() {
+        const passwordInput = document.getElementById('password');
+        const icon = this.querySelector('i');
+        
+        if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+        } else {
+          passwordInput.type = 'password';
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+        }
+      });
+      
+      // Manejo del formulario de login
+      document.getElementById('login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const rememberMe = document.getElementById('remember-me').checked;
+        
+        const errorMessage = document.getElementById('error-message');
+        const successMessage = document.getElementById('success-message');
+        const spinner = document.getElementById('spinner');
+        const submitBtn = document.querySelector('.btn-primary span');
+        
+        // Ocultar mensajes previos
+        errorMessage.style.display = 'none';
+        successMessage.style.display = 'none';
+        
+        // Mostrar spinner
+        spinner.style.display = 'block';
+        submitBtn.style.opacity = '0.7';
+        
+        // Enviar datos al servidor
+        fetch('/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password, rememberMe }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Ocultar spinner
+          spinner.style.display = 'none';
+          submitBtn.style.opacity = '1';
+          
+          if (data.token) {
+            // Guardar token en localStorage o sessionStorage
+            if (rememberMe) {
+              localStorage.setItem('token', data.token);
+              localStorage.setItem('user', JSON.stringify(data.user));
+            } else {
+              sessionStorage.setItem('token', data.token);
+              sessionStorage.setItem('user', JSON.stringify(data.user));
+            }
+            
+            // Mostrar mensaje de éxito
+            successMessage.style.display = 'block';
+            
+            // Redireccionar al usuario
+            setTimeout(() => {
+              window.location.href = 'app.html';
+            }, 1500);
+          } else {
+            // Mostrar mensaje de error
+            errorMessage.textContent = data.message || 'Error al iniciar sesión';
+            errorMessage.style.display = 'block';
+          }
+        })
+        .catch(error => {
+          // Ocultar spinner
+          spinner.style.display = 'none';
+          submitBtn.style.opacity = '1';
+          
+          // Mostrar mensaje de error
+          errorMessage.textContent = 'Error de conexión. Intenta más tarde.';
+          errorMessage.style.display = 'block';
+          console.error('Error:', error);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
