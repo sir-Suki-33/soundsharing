@@ -12,6 +12,44 @@
   <!-- Iconos -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
+    /* Estilos base */
+    :root {
+      --primary-color: #4CAF50;
+      --primary-dark: #2E7D32;
+      --text-light: rgba(255, 255, 255, 0.9);
+      --text-medium: rgba(255, 255, 255, 0.7);
+      --text-dim: rgba(255, 255, 255, 0.6);
+      --bg-card: rgba(255, 255, 255, 0.05);
+      --bg-card-hover: rgba(255, 255, 255, 0.08);
+      --border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      color: var(--text-light);
+      background: #0d0d0d;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      touch-action: manipulation; /* Mejora interacción táctil */
+    }
+
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+    
     /* Estilos específicos para la landing page */
     .hero-section {
       position: relative;
@@ -21,15 +59,15 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 2rem;
+      padding: 4rem 1.5rem 2rem; /* Mayor padding superior para dispositivos móviles */
       z-index: 1;
     }
     
     .logo {
-      font-size: 3.5rem;
+      font-size: min(3.5rem, 12vw); /* Usa tamaño responsivo con unidades viewport */
       font-weight: bold;
       margin-bottom: 1rem;
-      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -37,35 +75,42 @@
     }
     
     .tagline {
-      font-size: 1.5rem;
+      font-size: clamp(1rem, 4vw, 1.5rem); /* Tamaño responsivo con clamp */
       margin-bottom: 2.5rem;
-      max-width: 600px;
-      color: rgba(255, 255, 255, 0.9);
+      max-width: min(600px, 90%); /* Limita a 90% del ancho en dispositivos pequeños */
+      color: var(--text-light);
     }
     
     .cta-buttons {
       display: flex;
-      gap: 1.5rem;
+      flex-wrap: wrap; /* Permite ajuste en líneas múltiples */
+      justify-content: center;
+      gap: 1rem; /* Más pequeño en móvil */
       margin-bottom: 3rem;
+      width: 100%;
+      max-width: 500px; /* Limita el ancho máximo */
     }
     
     .cta-button {
       display: inline-block;
-      padding: 1rem 2.5rem;
+      padding: 0.8rem 2rem; /* Más pequeño en móvil para mejor usabilidad */
       border-radius: 50px;
       font-weight: bold;
-      font-size: 1.1rem;
+      font-size: 1rem;
       transition: all 0.3s ease;
       text-decoration: none;
+      min-width: min(200px, 80%); /* Asegura tamaño mínimo pero se ajusta en pantallas pequeñas */
+      text-align: center;
     }
     
     .primary-button {
-      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
       color: white;
       box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
     }
     
-    .primary-button:hover {
+    .primary-button:hover, 
+    .primary-button:active { /* Soporte para toque */
       transform: translateY(-3px);
       box-shadow: 0 6px 20px rgba(76, 175, 80, 0.6);
     }
@@ -75,69 +120,76 @@
       color: white;
       border: 1px solid rgba(255, 255, 255, 0.3);
       backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px); /* Soporte Safari */
     }
     
-    .secondary-button:hover {
+    .secondary-button:hover,
+    .secondary-button:active { /* Soporte para toque */
       background: rgba(255, 255, 255, 0.15);
       transform: translateY(-3px);
     }
     
     .features-section {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Reducido ancho mínimo */
+      gap: 1.5rem; /* Espacio reducido en móviles */
+      width: 100%;
       max-width: 1200px;
       margin: 0 auto;
-      padding: 2rem 1rem;
+      padding: 1rem;
     }
     
     .feature-card {
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--bg-card);
       border-radius: 15px;
-      padding: 2rem;
+      padding: 1.5rem; /* Padding reducido en móviles */
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
       transition: all 0.3s ease;
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      -webkit-backdrop-filter: blur(10px); /* Soporte Safari */
+      border: 1px solid var(--border-color);
+      height: 100%; /* Asegura misma altura */
     }
     
-    .feature-card:hover {
-      transform: translateY(-10px);
-      background: rgba(255, 255, 255, 0.08);
+    .feature-card:hover,
+    .feature-card:active { /* Soporte para toque */
+      transform: translateY(-5px);
+      background: var(--bg-card-hover);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     }
     
     .feature-icon {
-      font-size: 2.5rem;
-      margin-bottom: 1.5rem;
-      color: #4CAF50;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
     }
     
     .feature-title {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      color: rgba(255, 255, 255, 0.9);
+      font-size: 1.3rem;
+      margin-bottom: 0.8rem;
+      color: var(--text-light);
     }
     
     .feature-description {
-      color: rgba(255, 255, 255, 0.7);
+      color: var(--text-medium);
       line-height: 1.6;
+      font-size: 0.95rem;
     }
     
     .how-it-works {
-      padding: 4rem 2rem;
+      padding: 3rem 1.5rem; /* Padding reducido en móviles */
       text-align: center;
       max-width: 1200px;
       margin: 0 auto;
     }
     
     .section-title {
-      font-size: 2.5rem;
-      margin-bottom: 3rem;
-      color: rgba(255, 255, 255, 0.9);
+      font-size: clamp(1.8rem, 5vw, 2.5rem); /* Tamaño responsivo */
+      margin-bottom: 2.5rem;
+      color: var(--text-light);
       position: relative;
       display: inline-block;
     }
@@ -150,52 +202,53 @@
       transform: translateX(-50%);
       width: 50px;
       height: 3px;
-      background: linear-gradient(90deg, transparent, #4CAF50, transparent);
+      background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
     }
     
     .steps {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 3rem;
+      gap: 2rem; /* Espacio reducido en móviles */
       margin: 3rem 0;
     }
     
     .step {
       flex: 1;
-      min-width: 250px;
+      min-width: min(250px, 90%); /* Asegura tamaño mínimo pero se ajusta en pantallas pequeñas */
       max-width: 300px;
       position: relative;
     }
     
     .step-number {
-      width: 50px;
-      height: 50px;
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       font-weight: bold;
-      margin: 0 auto 1.5rem;
+      margin: 0 auto 1.2rem;
       box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
     }
     
     .step-title {
-      font-size: 1.3rem;
-      margin-bottom: 1rem;
-      color: rgba(255, 255, 255, 0.9);
+      font-size: 1.2rem;
+      margin-bottom: 0.8rem;
+      color: var(--text-light);
     }
     
     .step-description {
-      color: rgba(255, 255, 255, 0.7);
+      color: var(--text-medium);
       line-height: 1.6;
+      font-size: 0.95rem;
     }
     
     .testimonials {
-      padding: 4rem 2rem;
+      padding: 3rem 1.5rem; /* Padding reducido en móviles */
       text-align: center;
       max-width: 1200px;
       margin: 0 auto;
@@ -205,26 +258,29 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 2rem;
-      margin: 3rem 0;
+      gap: 1.5rem; /* Espacio reducido en móviles */
+      margin: 2.5rem 0;
     }
     
     .testimonial-card {
       flex: 1;
-      min-width: 280px;
+      min-width: min(280px, 90%); /* Asegura tamaño mínimo pero se ajusta en pantallas pequeñas */
       max-width: 350px;
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--bg-card);
       border-radius: 15px;
-      padding: 2rem;
+      padding: 2rem 1.5rem; /* Padding horizontal reducido en móviles */
       text-align: left;
       transition: all 0.3s ease;
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      -webkit-backdrop-filter: blur(10px); /* Soporte Safari */
+      border: 1px solid var(--border-color);
       position: relative;
+      height: 100%; /* Asegura misma altura */
     }
     
-    .testimonial-card:hover {
-      background: rgba(255, 255, 255, 0.08);
+    .testimonial-card:hover,
+    .testimonial-card:active { /* Soporte para toque */
+      background: var(--bg-card-hover);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     }
     
@@ -239,8 +295,9 @@
     .testimonial-text {
       font-style: italic;
       margin-bottom: 1.5rem;
-      color: rgba(255, 255, 255, 0.85);
+      color: var(--text-light);
       line-height: 1.6;
+      font-size: 0.95rem;
     }
     
     .testimonial-author {
@@ -249,31 +306,41 @@
     }
     
     .author-avatar {
-      width: 50px;
-      height: 50px;
+      width: 40px; /* Tamaño reducido en móviles */
+      height: 40px; /* Tamaño reducido en móviles */
       border-radius: 50%;
-      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
       display: flex;
       align-items: center;
       justify-content: center;
       margin-right: 1rem;
       font-weight: bold;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
+      flex-shrink: 0; /* Evita que se comprima */
+    }
+    
+    .author-info {
+      flex-grow: 1;
+      overflow: hidden; /* Evita desbordamiento */
     }
     
     .author-info h4 {
-      margin: 0 0 0.3rem 0;
-      color: rgba(255, 255, 255, 0.9);
+      margin: 0 0 0.2rem 0;
+      color: var(--text-light);
+      font-size: 1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     
     .author-info p {
       margin: 0;
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.85rem;
+      color: var(--text-dim);
     }
     
     .cta-section {
-      padding: 6rem 2rem;
+      padding: 4rem 1.5rem; /* Padding reducido en móviles */
       text-align: center;
       background: radial-gradient(ellipse at bottom, rgba(76, 175, 80, 0.2), transparent 70%);
       position: relative;
@@ -281,55 +348,60 @@
     }
     
     .cta-content {
-      max-width: 700px;
+      max-width: min(700px, 95%); /* Asegura no salir del viewport */
       margin: 0 auto;
     }
     
     .cta-title {
-      font-size: 2.5rem;
-      margin-bottom: 1.5rem;
-      color: rgba(255, 255, 255, 0.95);
+      font-size: clamp(1.8rem, 5vw, 2.5rem); /* Tamaño responsivo */
+      margin-bottom: 1.2rem;
+      color: var(--text-light);
     }
     
     .cta-description {
-      font-size: 1.2rem;
-      margin-bottom: 2.5rem;
-      color: rgba(255, 255, 255, 0.8);
+      font-size: clamp(1rem, 4vw, 1.2rem); /* Tamaño responsivo */
+      margin-bottom: 2rem;
+      color: var(--text-medium);
     }
     
     .fancy-border {
       position: relative;
       padding: 3px;
       border-radius: 52px;
-      background: linear-gradient(135deg, #4CAF50, #2E7D32, #4CAF50);
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark), var(--primary-color));
       display: inline-block;
+      width: min(100%, 300px); /* Limita ancho máximo pero es fluido */
     }
     
     .fancy-button {
-      display: inline-block;
-      padding: 1rem 3rem;
+      display: block; /* Cambio a block para llenar el contenedor padre */
+      width: 100%;
+      padding: 0.9rem 2rem;
       border-radius: 50px;
       font-weight: bold;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       background: #0d0d0d;
       color: white;
       text-decoration: none;
       transition: all 0.3s ease;
+      text-align: center;
     }
     
-    .fancy-border:hover {
-      background: linear-gradient(135deg, #2E7D32, #4CAF50, #2E7D32);
+    .fancy-border:hover,
+    .fancy-border:active { /* Soporte para toque */
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary-color), var(--primary-dark));
     }
     
-    .fancy-border:hover .fancy-button {
+    .fancy-border:hover .fancy-button,
+    .fancy-border:active .fancy-button { /* Soporte para toque */
       background: rgba(13, 13, 13, 0.95);
       transform: translateY(-2px);
     }
     
     footer {
-      padding: 2rem;
+      padding: 2rem 1.5rem;
       text-align: center;
-      color: rgba(255, 255, 255, 0.6);
+      color: var(--text-dim);
       font-size: 0.9rem;
       position: relative;
       z-index: 1;
@@ -337,19 +409,23 @@
     
     .footer-links {
       display: flex;
+      flex-wrap: wrap; /* Permite flujo en pantallas pequeñas */
       justify-content: center;
-      gap: 1.5rem;
+      gap: 1rem; /* Espacio reducido en móviles */
       margin: 1rem 0;
     }
     
     .footer-link {
-      color: rgba(255, 255, 255, 0.7);
+      color: var(--text-medium);
       text-decoration: none;
       transition: color 0.3s ease;
+      padding: 0.5rem; /* Área de toque ampliada */
+      font-size: 0.9rem;
     }
     
-    .footer-link:hover {
-      color: #4CAF50;
+    .footer-link:hover,
+    .footer-link:active { /* Soporte para toque */
+      color: var(--primary-color);
     }
     
     /* Animación de ascenso para elementos */
@@ -367,19 +443,28 @@
     /* Ajustes para dispositivos móviles */
     @media (max-width: 768px) {
       .logo {
-        font-size: 2.8rem;
+        font-size: 2.5rem;
       }
       
       .tagline {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
       }
       
       .cta-buttons {
         flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+      
+      .cta-button {
+        width: 100%;
+        max-width: 250px; /* Limita el ancho en móviles */
       }
       
       .section-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
       }
       
       .steps {
@@ -387,24 +472,120 @@
       }
       
       .cta-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
+      }
+      
+      .feature-icon {
+        font-size: 1.8rem;
+      }
+      
+      .feature-title {
+        font-size: 1.2rem;
+      }
+      
+      /* Reducir espacio entre secciones */
+      .how-it-works, .testimonials, .cta-section {
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+      }
+      
+      /* Mejorar altura de tap para todos los elementos interactivos */
+      .footer-link, .cta-button, a {
+        min-height: 44px; /* Altura mínima recomendada para elementos interactivos */
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
     
     @media (max-width: 480px) {
       .logo {
-        font-size: 2.2rem;
+        font-size: 2rem;
       }
       
-      .feature-card, .testimonial-card {
+      .feature-card, .testimonial-card, .step {
         min-width: 100%;
+      }
+      
+      .section-title:after {
+        width: 40px;
+      }
+      
+      .hero-section {
+        padding-top: 3rem;
+      }
+      
+      .cta-description {
+        font-size: 0.95rem;
+      }
+      
+      .fancy-border {
+        width: 100%; /* Ocupa todo el ancho disponible */
+      }
+      
+      .fancy-button {
+        font-size: 1rem;
+        padding: 0.8rem 1.5rem;
+      }
+      
+      /* Mejorar visualización en dispositivos muy pequeños */
+      .testimonial-quote {
+        font-size: 2.5rem;
+      }
+      
+      .author-avatar {
+        width: 35px;
+        height: 35px;
+      }
+    }
+    
+    /* Optimizaciones adicionales para pantallas grandes */
+    @media (min-width: 1200px) {
+      .features-section {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      
+      .steps {
+        gap: 4rem;
+      }
+    }
+    
+    /* Soporte para orientación específica */
+    @media (max-height: 600px) and (orientation: landscape) {
+      .hero-section {
+        padding-top: 2rem;
+        padding-bottom: 1rem;
+        min-height: auto;
+      }
+      
+      .tagline {
+        margin-bottom: 1.5rem;
+      }
+      
+      .features-section {
+        margin-top: 1rem;
+      }
+    }
+
+    /* Optimizaciones para accesibilidad táctil */
+    @media (pointer: coarse) {
+      button, 
+      .cta-button,
+      .footer-link,
+      .fancy-button {
+        padding: 0.8rem 1.5rem; /* Asegura área de toque adecuada */
+      }
+      
+      /* Distancia entre elementos para evitar toques accidentales */
+      .footer-links {
+        gap: 1.5rem;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Fondo de partículas -->
+  <!-- Fondo de partículas (reducido en móviles para mejor rendimiento) -->
   <div id="particles-js"></div>
 
   <!-- Hero Section -->
@@ -539,11 +720,14 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Cargar partículas
+      // Detectar si es dispositivo móvil para optimizar partículas
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      
+      // Cargar partículas con configuración adaptada a dispositivos
       tsParticles.load("particles-js", {
         "particles": {
           "number": {
-            "value": 30,
+            "value": isMobile ? 10 : 30, // Menos partículas en móviles
             "density": {
               "enable": true,
               "area": 800
@@ -575,16 +759,16 @@
             ]
           },
           "opacity": {
-            "value": 0.5,
+            "value": isMobile ? 0.4 : 0.5, // Menor opacidad en móviles
             "random": true
           },
           "size": {
-            "value": 20,
+            "value": isMobile ? 15 : 20, // Tamaño más pequeño en móviles
             "random": true
           },
           "move": {
             "enable": true,
-            "speed": 1.5,
+            "speed": isMobile ? 1 : 1.5, // Velocidad reducida en móviles
             "direction": "none",
             "outModes": {
               "default": "out"
@@ -594,16 +778,37 @@
         "interactivity": {
           "events": {
             "onHover": {
-              "enable": true,
+              "enable": !isMobile, // Desactivar en móviles para mejorar rendimiento
               "mode": "repulse"
+            },
+            "onClick": {
+              "enable": true,
+              "mode": "push"
             }
           }
         },
         "retina_detect": true
       });
       
-      // Animación de elementos al hacer scroll
+      // Optimización de la animación de elementos al hacer scroll
       const fadeElements = document.querySelectorAll('.fade-up');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            observer.unobserve(entry.target); // Dejar de observar después de activar
+          }
+        });
+      }, {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      });
+      
+      // Observar todos los elementos con fade-up
+      fadeElements.forEach(element => {
+        observer.observe(element);
+      });
       
       // Activar elementos visibles inicialmente
       fadeElements.forEach(element => {
@@ -615,20 +820,35 @@
         }
       });
       
-      // Detectar elementos al hacer scroll
-      window.addEventListener('scroll', function() {
-        fadeElements.forEach(element => {
-          if (element.classList.contains('active')) return;
-          
-          const elementTop = element.getBoundingClientRect().top;
-          const windowHeight = window.innerHeight;
-          
-          if (elementTop < windowHeight - 100) {
-            element.classList.add('active');
-          }
-        });
+      // Mejorar la interacción táctil
+      document.addEventListener('touchstart', function() {}, {passive: true});
+      
+      // Precarga de imágenes de partículas para mejor rendimiento
+      const particleImages = [
+        'img/particles/microphone.png',
+        'img/particles/megaphone.png',
+        'img/particles/speaker.png',
+        'img/particles/volume.png'
+      ];
+      
+      particleImages.forEach(src => {
+        const img = new Image();
+        img.src = src;
       });
     });
+  </script>
+
+  <!-- Script para registrar el Service Worker para PWA -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js').then(function(registration) {
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, function(err) {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      });
+    }
   </script>
 
 </body>
